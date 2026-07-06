@@ -32,6 +32,74 @@
     </div>
 
     <div class="form-group">
+      <label><strong>Có sở thích?</strong></label>
+
+      <div>
+        <label class="mr-3">
+          <input
+            type="radio"
+            :value="true"
+            v-model="contactLocal.hasHobby"
+          />
+          Có
+        </label>
+
+        <label class="ml-3">
+          <input
+            type="radio"
+            :value="false"
+            v-model="contactLocal.hasHobby"
+          />
+          Không
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group" v-if="contactLocal.hasHobby">
+      <label><strong>Chọn sở thích</strong></label>
+
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          value="Xã hội"
+          v-model="contactLocal.hobbies"
+        />
+        <label class="form-check-label">Xã hội</label>
+      </div>
+
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          value="Khoa học"
+          v-model="contactLocal.hobbies"
+        />
+        <label class="form-check-label">Khoa học</label>
+      </div>
+
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          value="Công nghệ"
+          v-model="contactLocal.hobbies"
+        />
+        <label class="form-check-label">Công nghệ</label>
+      </div>
+
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          value="Giải trí"
+          v-model="contactLocal.hobbies"
+        />
+        <label class="form-check-label">Giải trí</label>
+      </div>
+    </div>
+
+    <div class="form-group">
       <button class="btn btn-primary">Lưu</button>
       <button v-if="contactLocal._id" type="button" class="ml-2 btn btn-danger" @click="deleteContact">
         Xóa
@@ -78,7 +146,10 @@ export default {
     });
     return {
       // Sử dụng destructuring {...} để tạo bản sao clone, tránh làm thay đổi trực tiếp props cha
-      contactLocal: { ...this.contact },
+      contactLocal: { 
+        hobbies: [],
+        hasHobby: false,
+        ...this.contact },
       contactFormSchema,
     };
   },
@@ -87,6 +158,22 @@ export default {
       this.$emit("submit:contact", this.contactLocal);
     },
     deleteContact() {
+         if (this.contactLocal.hasHobby) {
+
+        if (
+          !this.contactLocal.hobbies ||
+          this.contactLocal.hobbies.length === 0
+        ) {
+          alert("Bạn phải chọn ít nhất một sở thích.");
+          return;
+        }
+
+      } else {
+
+        this.contactLocal.hobbies = [];
+
+      }
+
       // Đồng nhất sử dụng _id giống như v-if ngoài template
       this.$emit("delete:contact", this.contactLocal._id);
     },

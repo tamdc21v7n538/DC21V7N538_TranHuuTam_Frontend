@@ -28,5 +28,17 @@ contact: { type: Object, required: true },
 <i v-if="contact.favorite" class="fas fa-check"></i>
 <i v-else class="fas fa-times"></i>
 </div>
+
+<div class="p-1">
+<strong>Có sở thích:</strong>
+<span v-if="contact.hasHobby">Có</span>
+<span v-else>Không</span>
+</div>
+
+<div class="p-1" v-if="contact.hasHobby">
+<strong>Sở thích:</strong>
+{{ contact.hobbies ? contact.hobbies.join(", ") : "" }}
+</div>
+
 </div>
 </template>
